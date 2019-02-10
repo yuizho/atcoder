@@ -1,11 +1,11 @@
 N = int(input())
 cards = list(map(int, input().split()))
+cards.sort()
 alice = []
 bob = []
 for i in range(N):
-    max_card = cards.pop(cards.index(max(cards)))
     if i % 2 == 0:
-        alice.append(max_card)
+        alice.append(cards.pop())
     else:
-        bob.append(max_card)
+        bob.append(cards.pop())
 print(sum(alice) - sum(bob))
