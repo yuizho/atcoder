@@ -1,4 +1,4 @@
-package io.github.yuizho.abc87.b
+package io.github.yuizho.abc087.b
 
 fun main(args: Array<String>) {
     val fiveHandledYenCnt = readLine()!!.toInt()

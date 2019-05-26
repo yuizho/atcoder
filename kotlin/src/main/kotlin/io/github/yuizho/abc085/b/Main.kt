@@ -1,4 +1,4 @@
-package io.github.yuizho.abc085b
+package io.github.yuizho.abc085.b
 
 fun main(args: Array<String>) {
     val n = readLine()?.toInt() ?: 0
