@@ -1,9 +1,7 @@
 package io.github.yuizho.abc085b
 
 fun main(args: Array<String>) {
-    val mochiSet = mutableSetOf<String>()
-    for (n in 1..readLine()!!.toInt()) {
-        mochiSet.add(readLine()!!)
-    }
+    val n = readLine()?.toInt() ?: 0
+    val mochiSet = List(n) { readLine()!! }.toSet()
     println(mochiSet.size)
 }
