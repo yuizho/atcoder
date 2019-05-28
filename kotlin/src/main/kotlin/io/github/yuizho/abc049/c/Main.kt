@@ -1,34 +1,25 @@
 package io.github.yuizho.abc049.c
 
+import java.lang.StringBuilder
+
 fun main(args: Array<String>) {
     val text = readLine()!!
+    val keyWords = listOf("dream", "dreamer", "erase", "eraser")
     var result = "NO"
-
-    var tempText = text
-    while(true) {
-        val replaced = replace(tempText)
-        if (tempText == replaced) {
-            break
+    var sb = StringBuilder(text)
+    do {
+        var sholdContine = false
+        for (keyWord in keyWords) {
+            if (sb.endsWith(keyWord)) {
+                sb.delete(sb.length - keyWord.length, sb.length)
+                sholdContine = true
+                break
+            }
         }
-        if (replaced == "") {
+        if (sb.isEmpty()) {
             result = "YES"
             break
         }
-        tempText = replaced
-    }
+    } while (sholdContine)
     print(result)
-}
-
-fun replace(text: String): String {
-    return if (text.endsWith("dream")) {
-        text.substring(0, text.length - "dream".length)
-    } else if (text.endsWith("dreamer")) {
-        text.substring(0, text.length - "dreamer".length)
-    } else if (text.endsWith("erase")) {
-        text.substring(0, text.length - "erase".length)
-    } else if (text.endsWith("eraser")) {
-        text.substring(0, text.length - "eraser".length)
-    } else {
-        text
-    }
 }
