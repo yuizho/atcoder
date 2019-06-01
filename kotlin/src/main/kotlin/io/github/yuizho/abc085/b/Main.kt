@@ -1,7 +1,10 @@
 package io.github.yuizho.abc085.b
 
 fun main(args: Array<String>) {
-    val n = readLine()?.toInt() ?: 0
-    val mochiSet = List(n) { readLine()!! }.toSet()
+    val N = readLine()?.toInt() ?: 0
+    val mochiSet = hashSetOf<String>()
+    for(n in 0 until N) {
+        mochiSet.add(readLine()!!)
+    }
     println(mochiSet.size)
 }
