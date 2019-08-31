@@ -16,5 +16,9 @@ name = "edpca"
 path = "src/edpc/a.rs"
 
 [[bin]]
+name = "edpcc"
+path = "src/edpc/c.rs"
+
+[[bin]]
 name = "edpcd"
 path = "src/edpc/d.rs"
