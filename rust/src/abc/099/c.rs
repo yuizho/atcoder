@@ -10,41 +10,27 @@ fn main() {
     // 行ごとのiterが取れる
     let mut iter = buf.split_whitespace();
     let amount: u32 = iter.next().unwrap().parse().unwrap();
-    let mut dp = vec![0; 100];
+    // Nの最大値 + 1こ作っとく
+    let mut dp: Vec<u32> = vec![amount; 100001 as usize];
+    dp[0] = 0;
 
-    let mut result = 0;
-    for n in 1..100000 {
-        let remaining = amount - dp[n - 1];
-        if remaining == 0 {
-            break;
-        }
-        let tmp = cmp::max(max_conins(9, remaining), max_conins(6, remaining));
-        dp[n] = cmp::max(tmp, 1) + dp[n - 1];
-        result += 1;
+    for n in 1..(amount + 1) {
+        let n = n as usize;
+        dp[n] = cmp::min(dp[n], dp[n - 1] + 1);
+
+        // その要素番号(金額)までの最小手を求めて現在のdp[n]より小さければそちらを採用する
+        fill_min_step_to_dp(&mut dp, 6, n);
+        fill_min_step_to_dp(&mut dp, 9, n);
     }
-    println!("{}", result);
+    println!("{}", dp[amount as usize]);
 }
 
-fn max_conins(coin: u32, amount: u32) -> u32 {
-    let mut vec = Vec::new();
-    for n in 1..amount {
-        let val = coin.pow(n);
-        if val <= amount {
-            vec.push(val);
+fn fill_min_step_to_dp(dp: &mut Vec<u32>, coin: u32, n: usize) {
+    for j in 1..n {
+        if n as u32 >= coin.pow(j as u32) {
+            dp[n] = cmp::min(dp[n], dp[n - coin.pow(j as u32) as usize] + 1);
         } else {
             break;
         }
     }
-    match vec.iter().max() {
-        Some(n) => *n,
-        None => 0,
-    }
-}
-
-#[test]
-fn test_max_coins() {
-    assert_eq!(max_conins(9, 127), 81);
-    assert_eq!(max_conins(9, 81), 81);
-    assert_eq!(max_conins(9, 9), 9);
-    assert_eq!(max_conins(9, 6), 0);
 }
