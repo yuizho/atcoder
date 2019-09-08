@@ -16,7 +16,17 @@ fn main() {
     let mut tern = 0;
     while numbers.len() > 0 {
         // ココで参照取ると、numbers.removeでmutable参照が取れない
-        let max: u8 = *numbers.iter().max().unwrap();
+        /*
+        19 |         let max = numbers.iter().max().unwrap();
+              |                   ------- immutable borrow occurs here
+        20 |         let max_index: usize = numbers.iter().position(|s| s == max).unwrap();
+        21 |         numbers.remove(max_index);
+              |         ^^^^^^^^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
+        ...
+        25 |             bob += max;
+            |                    --- immutable borrow later used here
+        */
+        let max = *numbers.iter().max().unwrap();
         let max_index: usize = numbers.iter().position(|&s| s == max).unwrap();
         numbers.remove(max_index);
         if tern % 2 == 0 {
