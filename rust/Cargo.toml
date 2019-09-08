@@ -20,6 +20,10 @@ name = "abc086a"
 path = "src/abc/086/a.rs"
 
 [[bin]]
+name = "abc087b"
+path = "src/abc/087/b.rs"
+
+[[bin]]
 name = "abc099c"
 path = "src/abc/099/c.rs"
 
