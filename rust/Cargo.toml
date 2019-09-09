@@ -8,6 +8,10 @@ edition = "2018"
 
 [dependencies]
 [[bin]]
+name = "abc049c"
+path = "src/abc/049/c.rs"
+
+[[bin]]
 name = "abc081a"
 path = "src/abc/081/a.rs"
 
