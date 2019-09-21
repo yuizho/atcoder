@@ -9,26 +9,19 @@ fn main() {
     // 行ごとのiterが取れる
     let mut iter = buf.split_whitespace();
     let n: usize = iter.next().unwrap().parse().unwrap();
-    let mut buttons: Vec<usize> = (0..n)
+    let buttons: Vec<usize> = (0..n)
         .map(|_| iter.next().unwrap().parse().unwrap())
         .collect();
 
-    let mut result = 1;
-    let mut target = 2;
-    loop {
-        let index_opt = buttons.iter().position(|button_num| *button_num == target);
-        if let Some(index) = index_opt {
-            let next_button_num = index + 1;
-            if next_button_num == 1 {
-                break;
-            }
-            target = next_button_num;
-            buttons[index] = 100000;
-            result += 1;
-        } else {
-            result = -1;
-            break;
-        }
+    let mut cnt = 0;
+    let mut target_button_index = 1;
+    while target_button_index != 2 && cnt < 100000 {
+        target_button_index = buttons[target_button_index - 1];
+        cnt += 1;
     }
-    println!("{}", result);
+    if cnt == 100000 {
+        println!("-1");
+    } else {
+        println!("{}", cnt);
+    }
 }
