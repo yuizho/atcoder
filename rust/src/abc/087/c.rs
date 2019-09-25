@@ -16,13 +16,12 @@ fn main() {
             .collect(),
     ];
 
-    let mut answers = Vec::new();
-    for i in (0..n) {
-        answers.push(
+    let answers: Vec<u32> = (0..n)
+        .map(|i| {
             squares[0][0..(i + 1)].iter().fold(0, |acc, num| acc + num)
-                + squares[1][i..].iter().fold(0, |acc, num| acc + num),
-        );
-    }
+                + squares[1][i..].iter().fold(0, |acc, num| acc + num)
+        })
+        .collect();
 
     println!("{}", answers.iter().max().unwrap());
 }
