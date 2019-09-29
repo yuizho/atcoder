@@ -9,19 +9,28 @@ fn main() {
     let length: usize = iter.next().unwrap().parse().unwrap();
     let s: String = iter.next().unwrap().parse().unwrap();
 
-    let mut result = 100000 * 3;
-    for n in 0..length {
-        let mut count = 0;
-        if n != 0 {
-            count += s[0..n].chars().filter(|&c| c == 'W').count();
+    let mut easts: Vec<usize> = (0..length).map(|_| 0).collect();
+    let mut wests: Vec<usize> = (0..length).map(|_| 0).collect();
+
+    let chars = s.chars().collect::<Vec<char>>();
+    for i in (0..length - 1).rev() {
+        let c = chars[i + 1];
+        if c == 'E' {
+            easts[i] = easts[i + 1] + 1;
+        } else {
+            easts[i] = easts[i + 1];
         }
-        if n != s.len() - 1 {
-            count += s[(n + 1)..].chars().filter(|&c| c == 'E').count();
-        }
-        if result > count {
-            result = count;
+    }
+    for i in 1..length {
+        let c = chars[i - 1];
+        if c == 'W' {
+            wests[i] = wests[i - 1] + 1;
+        } else {
+            wests[i] = wests[i - 1];
         }
     }
 
-    println!("{}", result);
+    let results: Vec<usize> = easts.iter().zip(wests.iter()).map(|x| x.0 + x.1).collect();
+
+    println!("{}", results.iter().min().unwrap());
 }
