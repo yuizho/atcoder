@@ -11,6 +11,8 @@ fn main() {
     let input: String = iter.next().unwrap().parse().unwrap();
 
     let mut patterns = Vec::new();
+    // '+' の位置のパターンをbit全探索で作る (そのため-1する)
+    // 外側のループが全体のパターン数
     for i in 0..(1 << input.len() - 1) {
         let mut row = Vec::new();
         for j in 0..input.len() {
