@@ -59,7 +59,6 @@ fn main() {
         }
         patterns.push(row);
     }
-    patterns = patterns[0..patterns.len() - 1].to_vec();
 
     let mut result = 10000000;
     for pattern in &patterns {
@@ -70,7 +69,7 @@ fn main() {
             let mut current_score = pattern.score;
             tmp_count = pattern.attempts;
             'outer: for anothers in pattern.another_list.iter().rev() {
-                for _ in 0..anothers.1 - 1 {
+                for _ in 0..anothers.1 {
                     if current_score < target_score {
                         tmp_count += 1;
                         current_score += anothers.0;
