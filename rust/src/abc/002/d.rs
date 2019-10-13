@@ -1,5 +1,5 @@
-use std::io::Read;
 use std::collections::HashSet;
+use std::io::Read;
 
 fn main() {
     let mut buf = String::new();
@@ -11,15 +11,15 @@ fn main() {
     let mut iter = buf.split_whitespace();
     let polititian_number: usize = iter.next().unwrap().parse().unwrap();
     let relation_number: usize = iter.next().unwrap().parse().unwrap();
-    let relations: Vec<(usize, usize)> = (0..relation_number)
-        .map(|_| {
-            (
-                iter.next().unwrap().parse().unwrap(),
-                iter.next().unwrap().parse().unwrap(),
-            )
-        })
-        .collect();
-    let mut results = vec![];
+    let mut N = vec![vec![0; 12]; 12];
+    for n in (0..relation_number) {
+        let x: usize = iter.next().unwrap().parse().unwrap();
+        let y: usize = iter.next().unwrap().parse().unwrap();
+        N[x][y] = 1;
+        N[y][x] = 1;
+    }
+    println!("{:?}", N);
+    let mut combinations = vec![];
     // 2の3乗の組み合わせを作成
     for i in 0..2usize.pow(polititian_number as u32) {
         let mut combination = HashSet::new();
@@ -28,10 +28,12 @@ fn main() {
         for j in 0..polititian_number {
             // j桁右シフトして最初のbitが1かチェック
             if ((i >> j) & 1) == 1 {
-                combination.insert(j + 1);
+                combination.insert(j);
             }
         }
-        results.push(combination);
+        if combination.len() > 1 {
+            combinations.push(combination);
+        }
     }
-    println!("{:?}", results);
+    println!("{:?}", combinations);
 }
