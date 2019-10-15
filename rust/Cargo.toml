@@ -116,6 +116,10 @@ name = "arc029a"
 path = "src/arc/029/a.rs"
 
 [[bin]]
+name = "atc001a"
+path = "src/atc/001/a.rs"
+
+[[bin]]
 name = "edpca"
 path = "src/edpc/a.rs"
 
