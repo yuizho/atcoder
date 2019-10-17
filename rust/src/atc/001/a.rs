@@ -1,4 +1,5 @@
 use std::io::Read;
+use std::process::exit;
 
 fn main() {
     let mut buf = String::new();
@@ -10,14 +11,12 @@ fn main() {
     let mut iter = buf.split_whitespace();
     let height: usize = iter.next().unwrap().parse().unwrap();
     let width: usize = iter.next().unwrap().parse().unwrap();
-    let table: Vec<Vec<char>> = (0..height)
+    let mut table: Vec<Vec<char>> = (0..height)
         .map(|_| {
             let row: String = iter.next().unwrap().parse().unwrap();
             row.chars().collect()
         })
         .collect();
-    let mut reached = vec![vec![false; width]; height];
-
     let mut start_x = 0;
     let mut start_y = 0;
     'outer: for (y, row) in table.iter().enumerate() {
@@ -29,44 +28,24 @@ fn main() {
             }
         }
     }
-    let result = search(
-        start_x as i32,
-        start_y as i32,
-        width,
-        height,
-        &table,
-        &mut reached,
-    );
-    println!("{}", if result { "yes" } else { "No" });
+    search(start_x as i32, start_y as i32, width, height, &mut table);
+    println!("No");
 }
 
-fn search(
-    x: i32,
-    y: i32,
-    width: usize,
-    height: usize,
-    table: &Vec<Vec<char>>,
-    reached: &mut Vec<Vec<bool>>,
-) -> bool {
+fn search(x: i32, y: i32, width: usize, height: usize, table: &mut Vec<Vec<char>>) {
     if x < 0 || width <= x as usize || y < 0 || height <= y as usize {
-        return false;
+        return;
     }
     if table[y as usize][x as usize] == '#' {
-        return false;
+        return;
     }
     if table[y as usize][x as usize] == 'g' {
-        return true;
+        println!("Yes");
+        exit(0);
     }
-    if reached[y as usize][x as usize] {
-        return false;
-    }
-    reached[y as usize][x as usize] = true;
-    if search(x + 1, y, width, height, table, reached)
-        || search(x - 1, y, width, height, table, reached)
-        || search(x, y + 1, width, height, table, reached)
-        || search(x, y - 1, width, height, table, reached)
-    {
-        return true;
-    }
-    false
+    table[y as usize][x as usize] = '#';
+    search(x + 1, y, width, height, table);
+    search(x - 1, y, width, height, table);
+    search(x, y + 1, width, height, table);
+    search(x, y - 1, width, height, table);
 }
