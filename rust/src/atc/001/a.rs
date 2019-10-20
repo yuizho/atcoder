@@ -48,22 +48,23 @@ fn main() {
     });
     while !stack.is_empty() {
         let current_point = stack.pop().unwrap();
+        maze[current_point.y][current_point.x].1 = true;
         if maze[current_point.y][current_point.x].0 == 'g' {
             println!("Yes");
             exit(0);
         }
-        push_reachable_point(current_point, &mut maze, &maze_spec, &mut stack);
+        push_reachable_point(&current_point, &maze, &maze_spec, &mut stack);
     }
     println!("No");
 }
 
 fn push_reachable_point(
-    current_point: Point,
-    maze: &mut Vec<Vec<(char, bool)>>,
+    current_point: &Point,
+    maze: &Vec<Vec<(char, bool)>>,
     maze_spec: &MazeSpec,
     stack: &mut Vec<Point>,
 ) {
-    let mut is_valid = |x: i32, y: i32| {
+    let mut push = |x: i32, y: i32| {
         if x >= 0
             && maze_spec.width > x as usize
             && y >= 0
@@ -71,15 +72,14 @@ fn push_reachable_point(
             && maze[y as usize][x as usize].0 != '#'
             && maze[y as usize][x as usize].1 == false
         {
-            maze[y as usize][x as usize].1 = true;
             stack.push(Point {
                 x: x as usize,
                 y: y as usize,
             });
         }
     };
-    is_valid(current_point.x as i32 + 1, current_point.y as i32);
-    is_valid(current_point.x as i32 - 1, current_point.y as i32);
-    is_valid(current_point.x as i32, current_point.y as i32 + 1);
-    is_valid(current_point.x as i32, current_point.y as i32 - 1);
+    push(current_point.x as i32 + 1, current_point.y as i32);
+    push(current_point.x as i32 - 1, current_point.y as i32);
+    push(current_point.x as i32, current_point.y as i32 + 1);
+    push(current_point.x as i32, current_point.y as i32 - 1);
 }
