@@ -16,27 +16,23 @@ fn main() {
         })
         .collect();
     let mut manipulaed_mazes = vec![];
-    let mut stack = vec![];
+    let mut starts = vec![];
     'outer: for (y, row) in maze.iter().enumerate() {
         for (x, &column) in row.iter().enumerate() {
-            if ((x != 0 && x != 9 && maze[y][x - 1] == 'o' && maze[y][x + 1] == 'o')
-                || (y != 0 && y != 9 && maze[y - 1][x] == 'o' && maze[y + 1][x] == 'o'))
-                && column == 'x'
-            {
+            if column == 'x' {
                 let mut copied: Vec<Vec<(char, bool)>> = maze
                     .iter()
                     .map(|row| row.iter().map(|&c| (c, false)).collect())
                     .collect();
                 copied[y][x] = ('o', false);
                 manipulaed_mazes.push(copied);
-            }
-            if column == 'o' && stack.is_empty() {
-                stack.push((x, y));
+                starts.push((x, y));
             }
         }
     }
 
-    for _maze in manipulaed_mazes {
+    for (i, _maze) in manipulaed_mazes.iter().enumerate() {
+        let mut stack = vec![starts[i]];
         let mut _m = _maze.clone();
         while !stack.is_empty() {
             let current_point = stack.pop().unwrap();
