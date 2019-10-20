@@ -1,6 +1,8 @@
 use std::io::Read;
 use std::process::exit;
 
+type Point = (usize, usize);
+
 fn main() {
     let mut buf = String::new();
 
@@ -15,48 +17,44 @@ fn main() {
             row.chars().collect()
         })
         .collect();
-    let mut manipulaed_mazes = vec![];
-    let mut starts = vec![];
-    'outer: for (y, row) in maze.iter().enumerate() {
-        for (x, &column) in row.iter().enumerate() {
-            if column == 'x' {
-                let mut copied: Vec<Vec<(char, bool)>> = maze
-                    .iter()
-                    .map(|row| row.iter().map(|&c| (c, false)).collect())
-                    .collect();
-                copied[y][x] = ('o', false);
-                manipulaed_mazes.push(copied);
-                starts.push((x, y));
-            }
-        }
-    }
 
-    for (i, _maze) in manipulaed_mazes.iter().enumerate() {
-        let mut stack = vec![starts[i]];
-        let mut _m = _maze.clone();
-        while !stack.is_empty() {
-            let current_point = stack.pop().unwrap();
-            // rachedにする
-            _m[current_point.1][current_point.0].1 = true;
-            push_reachable_point(&current_point, &_m, &mut stack);
-        }
-        if _m
-            .iter()
-            .flat_map(|x| x)
-            .filter(|x| x.0 == 'o')
-            .all(|x| x.1 == true)
-        {
-            println!("YES");
-            exit(0);
+    for (y, row) in maze.iter().enumerate() {
+        for (x, &column) in row.iter().enumerate() {
+            if column != 'x' {
+                continue;
+            }
+            // xをoに置き換えたマスを作成
+            let mut copied: Vec<Vec<(char, bool)>> = maze
+                .iter()
+                .map(|row| row.iter().map(|&c| (c, false)).collect())
+                .collect();
+            copied[y][x] = ('o', false);
+            // oのマスがすべて辿れるようになっているかチェック
+            let mut stack = vec![(x, y)];
+            while !stack.is_empty() {
+                let current_point = stack.pop().unwrap();
+                // rachedにする
+                copied[current_point.1][current_point.0].1 = true;
+                push_reachable_point(&current_point, &copied, &mut stack);
+            }
+            if copied
+                .iter()
+                .flat_map(|x| x)
+                .filter(|x| x.0 == 'o')
+                .all(|x| x.1 == true)
+            {
+                println!("YES");
+                exit(0);
+            }
         }
     }
     println!("NO");
 }
 
 fn push_reachable_point(
-    current_point: &(usize, usize),
+    current_point: &Point,
     maze: &Vec<Vec<(char, bool)>>,
-    stack: &mut Vec<(usize, usize)>,
+    stack: &mut Vec<Point>,
 ) {
     let mut push = |x: i32, y: i32| {
         if x >= 0
