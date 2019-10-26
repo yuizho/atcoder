@@ -120,6 +120,10 @@ path = "src/arc/029/a.rs"
 name = "arc031b"
 path = "src/arc/031/b.rs"
 
+
+[[bin]]
+name = "arc037b"
+path = "src/arc/037/b.rs"
 [[bin]]
 name = "atc001a"
 path = "src/atc/001/a.rs"
